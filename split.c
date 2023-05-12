@@ -9,15 +9,15 @@
 
 static int count_words(char *str)
 {
-    int words = 0;
-    char *word;
-    word = strtok(str, " ");
-    while (word)
-    {
-        words++;
-        word = strtok(NULL, " ");
-    }
-    return words;
+	int words = 0;
+	char *word;
+	word = strtok(str, " ");
+	while (word)
+	{
+		words++;
+		word = strtok(NULL, " ");
+	}
+	return words;
 }
 
 /**
@@ -29,72 +29,58 @@ static int count_words(char *str)
 
 static void remove_new_line(char **str)
 {
-    int last = _strlen(*str) - 1;
-    if ((*str)[last] == '\n')
-        (*str)[last] = '\0';
+	int last = _strlen(*str) - 1;
+	if ((*str)[last] == '\n')
+		(*str)[last] = '\0';
 }
-
-// /**
-//  * @brief 
-//  * 
-//  * @param words 
-//  */
-
-// void print_words(char **words)
-// {
-//     int i = 0;
-//     while (words[i])
-//     {
-//         printf("%s\n", words[i]);
-//         i++;
-//     }
-// }
 
 /**
  * free_words - free the array of words
- * 
  * @words: The array to free
  * Return: void 
  */
 
 void free_words(char **words)
 {
-    int i = 0;
-    while (words[i])
-    {
-        free(words[i]);
-        i++;
-    }
-    free(words);
+	int i = 0;
+
+	while (words[i])
+	{
+		free(words[i]);
+		i++;
+	}
+	free(words);
 }
 
 /**
  * spit - split a string into an array of words
- * 
  * @str: the string in hand 
  * Return: char** array of words
  */
 
 char **split(char *str)
 {
-    int i = 0;
-    char *word;
-    char *copy;
-    remove_new_line(&str);
-    copy = _strdup(str);
-    int size = count_words(copy);
-    free(copy);
-    char **words = (char **) malloc(sizeof(char *) * (size + 1));
-    if (!words)
-        return (NULL);
-    word = strtok(str, " ");
-    while (word)
-    {
-        words[i] = word;
-        i++;
-        word = strtok(NULL, " ");
-    }
-    free(word);
-    words[size] = NULL;
-    return words;
+	int i = 0;
+	char *word;
+	char *copy;
+	int size;
+	char **words;
+
+	remove_new_line(&str);
+	copy = _strdup(str);
+	size = count_words(copy);
+	free(copy);
+	**words = (char **) malloc(sizeof(char *) * (size + 1));
+	if (!words)
+		return (NULL);
+	word = strtok(str, " ");
+	while (word)
+	{
+		words[i] = word;
+		i++;
+		word = strtok(NULL, " ");
+	}
+	free(word);
+	words[size] = NULL;
+	return (words);
 }
