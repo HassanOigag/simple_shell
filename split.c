@@ -1,9 +1,8 @@
 #include "shell.h"
 
 /**
- * @count_words - counts the words in a string
- * 
- * @str: the string in hand 
+ * count_words - counts the words in a string
+ * @str: the string in hand
  * Return: int
  */
 
@@ -11,25 +10,27 @@ static int count_words(char *str)
 {
 	int words = 0;
 	char *word;
+
 	word = strtok(str, " ");
 	while (word)
 	{
 		words++;
 		word = strtok(NULL, " ");
 	}
-	return words;
+	return (words);
 }
 
 /**
  * remove_new_line - removes the new line in the end
- * 
+ *
  * @str: the string in hand
  * Return: void
  */
 
-static void remove_new_line(char **str)
+void remove_new_line(char **str)
 {
 	int last = _strlen(*str) - 1;
+
 	if ((*str)[last] == '\n')
 		(*str)[last] = '\0';
 }
@@ -37,7 +38,7 @@ static void remove_new_line(char **str)
 /**
  * free_words - free the array of words
  * @words: The array to free
- * Return: void 
+ * Return: void
  */
 
 void free_words(char **words)
@@ -53,8 +54,8 @@ void free_words(char **words)
 }
 
 /**
- * spit - split a string into an array of words
- * @str: the string in hand 
+ * split - split a string into an array of words
+ * @str: the string in hand
  * Return: char** array of words
  */
 
@@ -70,7 +71,7 @@ char **split(char *str)
 	copy = _strdup(str);
 	size = count_words(copy);
 	free(copy);
-	**words = (char **) malloc(sizeof(char *) * (size + 1));
+	words = (char **) malloc(sizeof(char *) * (size + 1));
 	if (!words)
 		return (NULL);
 	word = strtok(str, " ");

@@ -51,7 +51,7 @@ int main(void)
 		if (read < 0)
 			return (0);
 		remove_new_line(&line);
-		if (!line[0])
+		if (line[0])
 			execute_command(line);
 	}
 	free(line);
