@@ -15,11 +15,6 @@ void execute_command(char *cmd)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (words[1])
-		{
-			printf("./shell: No such file or directory\n");
-			exit(15);
-		}
 		if (execve(words[0], words, NULL) == -1)
 		{
 			printf("./shell: No such file or directory\n");
