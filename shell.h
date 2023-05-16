@@ -13,10 +13,10 @@
 int _strlen(char *str);
 int _strcmp(char *s1, char *s2);
 char *_strdup(char *s);
-char **split(char *str);
+char **split(char *str, char *c);
 void free_words(char **words);
 char *join(char *s1, char *s2);
-char *is_file_in_path(char *file, char **dirs);
 void remove_new_line(char **line);
+char *is_file_in_path(char *path, char *file);
 
 #endif

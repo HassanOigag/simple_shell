@@ -3,19 +3,20 @@
 /**
  * count_words - counts the words in a string
  * @str: the string in hand
+ * @c: the delimiter
  * Return: int
  */
 
-static int count_words(char *str)
+static int count_words(char *str, char *c)
 {
 	int words = 0;
 	char *word;
 
-	word = strtok(str, " ");
+	word = strtok(str, c);
 	while (word)
 	{
 		words++;
-		word = strtok(NULL, " ");
+		word = strtok(NULL, c);
 	}
 	return (words);
 }
@@ -56,10 +57,11 @@ void free_words(char **words)
 /**
  * split - split a string into an array of words
  * @str: the string in hand
+ * @c: the delimeter
  * Return: char** array of words
  */
 
-char **split(char *str)
+char **split(char *str, char *c)
 {
 	int i = 0;
 	char *word;
@@ -69,17 +71,17 @@ char **split(char *str)
 
 	remove_new_line(&str);
 	copy = _strdup(str);
-	size = count_words(copy);
+	size = count_words(copy, c);
 	free(copy);
 	words = (char **) malloc(sizeof(char *) * (size + 1));
 	if (!words)
 		return (NULL);
-	word = strtok(str, " ");
+	word = strtok(str, c);
 	while (word)
 	{
 		words[i] = word;
 		i++;
-		word = strtok(NULL, " ");
+		word = strtok(NULL, c);
 	}
 	free(word);
 	words[size] = NULL;

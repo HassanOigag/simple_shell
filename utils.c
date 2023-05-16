@@ -87,3 +87,32 @@ char *join(char *s1, char *s2)
 	str[i + j] = '\0';
 	return (str);
 }
+
+/**
+* is_file_in_path - checks if a file is in path
+* @path: the path variable
+* @file: the file in hand
+* Return: returns the full path of the command else return NULL
+*/
+
+char *is_file_in_path(char *path, char *file)
+{
+	struct stat st;
+	int i = 0;
+	char *full_path;
+	char **dirs;
+	char *base;
+
+	dirs = split(path, ":");
+	if (!dirs)
+		return (NULL);
+	while (dirs[i])
+	{
+		base = join(dirs[i], "/");
+		full_path = join(base, file);
+		if (stat(full_path, &st) == 0)
+			return (full_path);
+		i++;
+	}
+	return (NULL);
+}
