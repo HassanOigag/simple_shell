@@ -7,7 +7,7 @@
  *Return: void
  */
 
-void execute_command(char *cmd, char *path)
+void execute_command(char *cmd, char *path, char **env)
 {
 	char **words;
 	int pid;
@@ -31,7 +31,7 @@ void execute_command(char *cmd, char *path)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (execve(full_path, words, NULL) == -1)
+		if (execve(full_path, words, env) == -1)
 		{
 			printf("./shell: No such file or directory\n");
 			exit(15);
@@ -67,16 +67,14 @@ void printenv(char **env)
 int main(int __attribute__((unused))argc, char __attribute__((unused))**argv, char **env)
 {
 	char *line = NULL;
-	size_t n = 0;
-	ssize_t read;
 	char *path;
 
 	path = getenv("PATH");
 	while (1)
 	{
-		printf("$ ");
-		read = getline(&line, &n, stdin);
-		if (read < 0)
+		write(0, "$ ", 3);
+		line = get_next_line(0);
+		if (!line)
 			return (0);
 		remove_new_line(&line);
 		if (strcmp(line, "exit") == 0)
@@ -87,8 +85,8 @@ int main(int __attribute__((unused))argc, char __attribute__((unused))**argv, ch
 		if (strcmp(line, "env") == 0)
 			printenv(env);
 		if (line[0])
-			execute_command(line, _strdup(path));
+			execute_command(line, _strdup(path), env);
+		free(line);
 	}
-	free(line);
 	return (0);
 }
