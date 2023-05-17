@@ -44,11 +44,27 @@ void execute_command(char *cmd, char *path)
 }
 
 /**
+ * printenv - prints the env
+ * @env: array of strings
+ * Return: void
+ */
+
+void printenv(char **env)
+{
+	int	i = 0;
+	while (env[i])
+	{
+		printf("%s\n", env[i]);
+		i++;
+	}
+}
+
+/**
  * main - the entry point
  * Return: int
  */
 
-int main(void)
+int main(int __attribute__((unused))argc, char __attribute__((unused))**argv, char **env)
 {
 	char *line = NULL;
 	size_t n = 0;
@@ -68,6 +84,8 @@ int main(void)
 			printf("exit\n");
 			return (0);
 		}
+		if (strcmp(line, "env") == 0)
+			printenv(env);
 		if (line[0])
 			execute_command(line, _strdup(path));
 	}
