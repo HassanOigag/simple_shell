@@ -17,7 +17,7 @@
 int 	_strlen(char *str);
 int 	_strcmp(char *s1, char *s2);
 char 	*_strdup(char *s);
-char 	**split(char *str, char *c);
+char 	**split(char *str, char c);
 void 	free_words(char **words);
 char 	*join(char *s1, char *s2);
 void 	remove_new_line(char **line);

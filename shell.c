@@ -13,7 +13,7 @@ void execute_command(char *cmd, char *path, char **env)
 	int pid;
 	char *full_path;
 
-	words = split(cmd, " ");
+	words = split(cmd, ' ');
 	if (words[0][0] == '/' && access(words[0], F_OK) != 0)
 	{
 		printf("./shell: No such file or directory\n");
