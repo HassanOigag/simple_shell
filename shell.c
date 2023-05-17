@@ -14,13 +14,18 @@ void execute_command(char *cmd, char *path)
 	char *full_path;
 
 	words = split(cmd, " ");
-	if (access(words[0], F_OK) == 0)
+	if (words[0][0] == '/' && access(words[0], F_OK) != 0)
+	{
+		printf("./shell: No such file or directory\n");
+		return;
+	}
+	else if (words[0][0] == '/' && access(words[0], F_OK) == 0)
 		full_path = words[0];
 	else
 		full_path = is_file_in_path(path, words[0]);
 	if (!full_path)
 	{
-		printf("./shell: command not found\n");
+		printf("./shell: No such file or directory\n");
 		return;
 	}
 	pid = fork();
