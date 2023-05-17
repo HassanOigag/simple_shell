@@ -63,6 +63,11 @@ int main(void)
 		if (read < 0)
 			return (0);
 		remove_new_line(&line);
+		if (strcmp(line, "exit") == 0)
+		{
+			printf("exit\n");
+			return (0);
+		}
 		if (line[0])
 			execute_command(line, _strdup(path));
 	}
