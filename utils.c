@@ -97,7 +97,6 @@ char *join(char *s1, char *s2)
 
 char *is_file_in_path(char *path, char *file)
 {
-	struct stat st;
 	int i = 0;
 	char *full_path;
 	char **dirs;
@@ -110,7 +109,7 @@ char *is_file_in_path(char *path, char *file)
 	{
 		base = join(dirs[i], "/");
 		full_path = join(base, file);
-		if (stat(full_path, &st) == 0)
+		if (access(full_path, F_OK) == 0)
 			return (full_path);
 		i++;
 	}

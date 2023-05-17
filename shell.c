@@ -12,10 +12,9 @@ void execute_command(char *cmd, char *path)
 	char **words;
 	int pid;
 	char *full_path;
-	struct stat st;
 
 	words = split(cmd, " ");
-	if (stat(words[0], &st) == 0)
+	if (access(words[0], F_OK) == 0)
 		full_path = words[0];
 	else
 		full_path = is_file_in_path(path, words[0]);
