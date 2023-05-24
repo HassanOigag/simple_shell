@@ -13,7 +13,7 @@ void execute_command(char *cmd, char *path, char **env)
 	char **words;
 
 	int pid;
-	/*char *full_path;*/
+	char *full_path;
 
 	words = ft_split(cmd, ' ');
 	if (!words[0])
@@ -22,15 +22,29 @@ void execute_command(char *cmd, char *path, char **env)
 		free(path);
 		return;
 	}
+	if (words[0][0] == '/' && access(words[0], F_OK) != 0)
+	{
+		perror("./shell");
+		free_words(words);
+		free(path);
+		return;
+	}
+	else if (words[0][0] == '/' && access(words[0], F_OK) == 0)
+		full_path = _strdup(words[0]);
+	else
+		full_path = is_file_in_path(path, words[0]);
+	if (!full_path)
+	{
+		perror("./shell");
+		free_words(words);
+		return;
+	}
 	pid = fork();
 	if (pid == 0)
 	{
-		if (execve(words[0], words, env) == -1)
+		if (execve(full_path, words, env) == -1)
 		{
 			perror("./shell");
-			free_words(words);
-			free(cmd);
-			free(path);
 			exit(15);
 		}
 	}
@@ -38,8 +52,9 @@ void execute_command(char *cmd, char *path, char **env)
 		perror("fork error");
 	else
 		wait(NULL);
-	free_words(words);
 	free(path);
+	free(full_path);
+	free_words(words);
 }
 
 /**
@@ -94,6 +109,5 @@ int main(int argc, char **argv, char **env)
 			execute_command(line, _strdup(path), env);
 		free(line);
 	}
-	free(path);
 	return (0);
 }

@@ -9,10 +9,12 @@
 void free_words(char **words)
 {
 	int i = 0;
-
+	if (!words)
+		return;
 	while (words[i])
 	{
-		free(words[i]);
+		if (words[i])
+			free(words[i]);
 		i++;
 	}
 	free(words);

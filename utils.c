@@ -94,9 +94,16 @@ char *is_file_in_path(char *path, char *file)
 	{
 		base = join(dirs[i], "/");
 		full_path = join(base, file);
+		free(base);
 		if (access(full_path, F_OK) == 0)
+		{
+			free_words(dirs);
 			return (full_path);
+		}
+		free(full_path);
 		i++;
 	}
+	free(path);
+	free_words(dirs);
 	return (NULL);
 }
