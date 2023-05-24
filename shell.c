@@ -22,13 +22,6 @@ void execute_command(char *cmd, char *path, char **env)
 		free(path);
 		return;
 	}
-	if (words[1])
-	{
-		write(2, "./shell: No such file or directory\n", 35);
-		free_words(words);
-		free(path);
-		return;
-	}
 	pid = fork();
 	if (pid == 0)
 	{
