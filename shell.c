@@ -81,8 +81,8 @@ int main(int argc, char **argv, char **env)
 {
 	char *line = NULL;
 	char *path;
-	(void) ac;
-	(void *) argv;
+	(void) argc;
+	(void) argv;
 
 	path = getenv("PATH");
 	while (1)
