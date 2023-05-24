@@ -50,8 +50,10 @@ void execute_command(char *cmd, char *path, char **env)
 		{
 			perror("./shell");
 			free_words(words);
+			free(cmd);
+			free(path);
 			exit(15);
-		}
+		}	
 	}
 	else if (pid < 0)
 		perror("fork error");
@@ -113,5 +115,6 @@ int main(int argc, char **argv, char **env)
 			execute_command(line, _strdup(path), env);
 		free(line);
 	}
+	free(path);
 	return (0);
 }
