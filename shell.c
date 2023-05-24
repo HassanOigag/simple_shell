@@ -19,14 +19,12 @@ void execute_command(char *cmd, char *path, char **env)
 	if (!words[0])
 	{
 		free_words(words);
-		free(path);
 		return;
 	}
 	if (words[0][0] == '/' && access(words[0], F_OK) != 0)
 	{
 		perror("./shell");
 		free_words(words);
-		free(path);
 		return;
 	}
 	else if (words[0][0] == '/' && access(words[0], F_OK) == 0)
@@ -52,10 +50,10 @@ void execute_command(char *cmd, char *path, char **env)
 		perror("fork error");
 	else
 		wait(NULL);
-	free(path);
 	free(full_path);
 	free_words(words);
 }
+
 
 /**
  * printenv - prints the env
@@ -90,16 +88,20 @@ int main(int argc, char **argv, char **env)
 	(void) argc;
 	(void) argv;
 
-	path = getenv("PATH");
+	path = ft_getenv("PATH", env);
 	while (1)
 	{
 		write(0, "$ ", 3);
 		line = get_next_line(0);
 		if (!line)
+		{
+			free(path);
 			return (0);
+		}
 		remove_new_line(&line);
 		if (strcmp(line, "exit") == 0)
 		{
+			free(path);
 			free(line);
 			ft_putstr("exit\n");
 			return (0);
@@ -107,8 +109,9 @@ int main(int argc, char **argv, char **env)
 		if (strcmp(line, "env") == 0)
 			printenv(env);
 		if (line[0])
-			execute_command(line, _strdup(path), env);
+			execute_command(line, path, env);
 		free(line);
 	}
+	free(path);
 	return (0);
 }

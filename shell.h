@@ -13,7 +13,9 @@
 #define BUFFER_SIZE 5
 #endif
 
+
 /* utils */
+char *ft_getenv(char *name, char **env);
 int _strlen(char *str);
 int _strcmp(char *s1, char *s2);
 char *_strdup(char *s);
