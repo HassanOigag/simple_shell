@@ -91,10 +91,13 @@ int main(int argc, char **argv, char **env)
 	path = ft_getenv("PATH", env);
 	while (1)
 	{
-		write(0, "$ ", 3);
+		if (isatty(STDIN_FILENO))
+			write(STDOUT_FILENO, "$ ", 2);
 		line = get_next_line(0);
 		if (!line)
 		{
+			if (isatty(STDIN_FILENO))
+				write(STDOUT_FILENO, "\n", 1);
 			free(path);
 			return (0);
 		}
