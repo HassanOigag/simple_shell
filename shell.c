@@ -18,7 +18,7 @@ void execute_command(char *cmd, char *path, char **env)
 	words = ft_split(cmd, ' ');
 	if (words[0][0] == '/' && access(words[0], F_OK) != 0)
 	{
-		printf("./shell: No such file or directory\n");
+		perror("./shell:");
 		return;
 	}
 	else if (words[0][0] == '/' && access(words[0], F_OK) == 0)
@@ -27,7 +27,7 @@ void execute_command(char *cmd, char *path, char **env)
 		full_path = is_file_in_path(path, words[0]);
 	if (!full_path)
 	{
-		printf("./shell: No such file or directory\n");
+		perror("./shell:");
 		return;
 	}
 	pid = fork();
@@ -35,19 +35,19 @@ void execute_command(char *cmd, char *path, char **env)
 	{
 		if (execve(full_path, words, env) == -1)
 		{
-			printf("./shell: No such file or directory\n");
+			perror("./shell:");
 			free_words(words);
 			exit(15);
 		}
 		if (execve(words[0], words, NULL) == -1)
 		{
-			printf("./shell: No such file or directory\n");
+			perror("./shell:");
 			free_words(words);
 			exit(15);
 		}
 	}
 	else if (pid < 0)
-		printf("fork error\n");
+		perror("./shell:");
 	else
 		wait(NULL);
 }
@@ -64,7 +64,8 @@ void printenv(char **env)
 
 	while (env[i])
 	{
-		printf("%s\n", env[i]);
+		ft_putstr(env[i]);
+		write(1, "\n", 1);
 		i++;
 	}
 }
@@ -94,7 +95,7 @@ int main(int argc, char **argv, char **env)
 		remove_new_line(&line);
 		if (strcmp(line, "exit") == 0)
 		{
-			printf("exit\n");
+			ft_putstr("exit\n");
 			return (0);
 		}
 		if (strcmp(line, "env") == 0)

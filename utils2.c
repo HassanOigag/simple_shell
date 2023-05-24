@@ -49,3 +49,20 @@ int _strlen(char *str)
 		i++;
 	return (i);
 }
+
+/**
+* ft_putstr - prints a string
+* @str: the string in hand
+* Return: nothing
+*/
+
+void ft_putstr(char *str)
+{
+	int i = 0;
+
+	while (str[i])
+	{
+		write(1, &str[i], 1);
+		i++;
+	}
+}
