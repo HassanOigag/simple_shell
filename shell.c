@@ -4,6 +4,7 @@
  *execute_command - executes a command
  *@cmd:  the command to be executed
  *@path: the path env variable
+ *@env: envirenement
  *Return: void
  */
 
@@ -59,7 +60,8 @@ void execute_command(char *cmd, char *path, char **env)
 
 void printenv(char **env)
 {
-	int	i = 0;
+	int i = 0;
+
 	while (env[i])
 	{
 		printf("%s\n", env[i]);
@@ -69,10 +71,15 @@ void printenv(char **env)
 
 /**
  * main - the entry point
+ * @argc: param
+ * @argv: param
+ * @env: envirenement
+ * @__attribute__: att
  * Return: int
  */
 
-int main(int __attribute__((unused))argc, char __attribute__((unused))**argv, char **env)
+int main(int __attribute__((unused))argc,
+		char __attribute__((unused))**argv, char **env)
 {
 	char *line = NULL;
 	char *path;
