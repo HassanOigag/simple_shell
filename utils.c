@@ -103,7 +103,6 @@ char *is_file_in_path(char *path, char *file)
 		free(full_path);
 		i++;
 	}
-	free(path);
 	free_words(dirs);
 	return (NULL);
 }
