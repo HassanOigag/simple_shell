@@ -9,9 +9,8 @@
 void execute_command(char *cmd)
 {
 	char **words;
-	int pid;
+	int pid = fork();
 
-	pid = fork();
 	if (pid == 0)
 	{
 		words = split(cmd);
@@ -27,7 +26,6 @@ void execute_command(char *cmd)
 			free_words(words);
 			exit(15);
 		}
-		//free_words(words);
 	}
 	else if (pid < 0)
 		printf("fork error\n");

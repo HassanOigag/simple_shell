@@ -11,6 +11,7 @@ static int count_words(char *str)
 	int words = 0;
 	char *word;
 	char *copy = _strdup(str);
+
 	word = strtok(copy, " ");
 	while (word)
 	{
