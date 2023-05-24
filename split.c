@@ -10,13 +10,14 @@ static int count_words(char *str)
 {
 	int words = 0;
 	char *word;
-
-	word = strtok(str, " ");
+	char *copy = _strdup(str);
+	word = strtok(copy, " ");
 	while (word)
 	{
 		words++;
 		word = strtok(NULL, " ");
 	}
+	free(copy);
 	return (words);
 }
 
@@ -47,10 +48,16 @@ void free_words(char **words)
 
 	while (words[i])
 	{
-		free(words[i]);
+		if (words[i])
+		{
+			free(words[i]);
+			words[i] = NULL;
+		}
 		i++;
 	}
-	free(words);
+	if (words)
+		free(words);
+	words = NULL;
 }
 
 /**
@@ -77,11 +84,11 @@ char **split(char *str)
 	word = strtok(str, " ");
 	while (word)
 	{
-		words[i] = word;
+		if (*word)
+			words[i] = word;
 		i++;
 		word = strtok(NULL, " ");
 	}
-	free(word);
 	words[size] = NULL;
 	return (words);
 }

@@ -11,21 +11,23 @@ void execute_command(char *cmd)
 	char **words;
 	int pid;
 
-	words = split(cmd);
 	pid = fork();
 	if (pid == 0)
 	{
+		words = split(cmd);
 		if (words[1])
 		{
 			printf("./shell: No such file or directory\n");
+			free_words(words);
 			exit(15);
 		}
 		if (execve(words[0], words, NULL) == -1)
 		{
 			printf("./shell: No such file or directory\n");
+			free_words(words);
 			exit(15);
 		}
-		free_words(words);
+		//free_words(words);
 	}
 	else if (pid < 0)
 		printf("fork error\n");
@@ -54,6 +56,7 @@ int main(void)
 		if (line[0])
 			execute_command(line);
 	}
-	free(line);
+	if (line)
+		free(line);
 	return (0);
 }
