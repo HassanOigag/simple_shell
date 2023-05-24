@@ -1,6 +1,41 @@
 #include "shell.h"
 
 /**
+ * free_words - free the array of words
+ * @words: The array to free
+ * Return: void
+ */
+
+void free_words(char **words)
+{
+	int i = 0;
+
+	while (words[i])
+	{
+		free(words[i]);
+		i++;
+	}
+	free(words);
+}
+
+/**
+ * remove_new_line - removes the new line in the end
+ *
+ * @str: the string in hand
+ * Return: void
+ */
+
+void remove_new_line(char **str)
+{
+	int last = _strlen(*str) - 1;
+
+	if ((*str)[last] == '\n')
+		(*str)[last] = '\0';
+}
+
+
+
+/**
  * _strlen - calculates the length of the string
  * @str: the string in hand
  * Return: the size of the string
@@ -86,4 +121,32 @@ char *join(char *s1, char *s2)
 	}
 	str[i + j] = '\0';
 	return (str);
+}
+
+/**
+* is_file_in_path - checks if a file is in path
+* @path: the path variable
+* @file: the file in hand
+* Return: returns the full path of the command else return NULL
+*/
+
+char *is_file_in_path(char *path, char *file)
+{
+	int i = 0;
+	char *full_path;
+	char **dirs;
+	char *base;
+
+	dirs = ft_split(path, ':');
+	if (!dirs)
+		return (NULL);
+	while (dirs[i])
+	{
+		base = join(dirs[i], "/");
+		full_path = join(base, file);
+		if (access(full_path, F_OK) == 0)
+			return (full_path);
+		i++;
+	}
+	return (NULL);
 }
