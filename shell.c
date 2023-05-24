@@ -8,15 +8,20 @@
  *Return: void
  */
 
-void execute_command(char *cmd, char *path, char **env)
+void execute_command(char *cmd, char __attribute__((unused))*path, char **env)
 {
 	char **words;
 
 	int pid;
-	char *full_path;
+	/*char *full_path;*/
 
 	words = ft_split(cmd, ' ');
-	if (words[0][0] == '/' && access(words[0], F_OK) != 0)
+	if (words[1])
+	{
+		write(2, "./shell: No such file or directory\n", 35);
+		return;
+	}
+	/**if (words[0][0] == '/' && access(words[0], F_OK) != 0)
 	{
 		perror("./shell:");
 		return;
@@ -29,25 +34,19 @@ void execute_command(char *cmd, char *path, char **env)
 	{
 		perror("./shell:");
 		return;
-	}
+	}*/
 	pid = fork();
 	if (pid == 0)
 	{
-		if (execve(full_path, words, env) == -1)
+		if (execve(words[0], words, env) == -1)
 		{
-			perror("./shell:");
-			free_words(words);
-			exit(15);
-		}
-		if (execve(words[0], words, NULL) == -1)
-		{
-			perror("./shell:");
+			perror("./shell");
 			free_words(words);
 			exit(15);
 		}
 	}
 	else if (pid < 0)
-		perror("./shell:");
+		perror("fork error");
 	else
 		wait(NULL);
 }
