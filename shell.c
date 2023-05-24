@@ -16,9 +16,17 @@ void execute_command(char *cmd, char *path, char **env)
 	/*char *full_path;*/
 
 	words = ft_split(cmd, ' ');
+	if (!words[0])
+	{
+		free_words(words);
+		free(path);
+		return;
+	}
 	if (words[1])
 	{
 		write(2, "./shell: No such file or directory\n", 35);
+		free_words(words);
+		free(path);
 		return;
 	}
 	/**if (words[0][0] == '/' && access(words[0], F_OK) != 0)
@@ -85,7 +93,7 @@ int main(int argc, char **argv, char **env)
 	char *path;
 	(void) argc;
 	(void) argv;
-	
+
 	path = getenv("PATH");
 	while (1)
 	{
@@ -105,7 +113,5 @@ int main(int argc, char **argv, char **env)
 			execute_command(line, _strdup(path), env);
 		free(line);
 	}
-	if (line)
-		free(line);
 	return (0);
 }

@@ -27,5 +27,7 @@ void *ft_memcpy(void *dst, const void *src, size_t n);
 char *ft_strjoin(char *s1, char *s2);
 char *ft_substr(char *s, unsigned int start, size_t len);
 int has_new_line(char *s);
+char *ft_strtrim(char *s1, char const *set);
 void ft_putstr(char *s);
+
 #endif
