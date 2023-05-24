@@ -1,3 +1,5 @@
 *.o
 shell
 Makefile
+*.txt
+

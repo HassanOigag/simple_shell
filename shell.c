@@ -29,20 +29,6 @@ void execute_command(char *cmd, char *path, char **env)
 		free(path);
 		return;
 	}
-	/**if (words[0][0] == '/' && access(words[0], F_OK) != 0)
-	{
-		perror("./shell:");
-		return;
-	}
-	else if (words[0][0] == '/' && access(words[0], F_OK) == 0)
-		full_path = words[0];
-	else
-		full_path = is_file_in_path(path, words[0]);
-	if (!full_path)
-	{
-		perror("./shell:");
-		return;
-	}*/
 	pid = fork();
 	if (pid == 0)
 	{
@@ -53,7 +39,7 @@ void execute_command(char *cmd, char *path, char **env)
 			free(cmd);
 			free(path);
 			exit(15);
-		}	
+		}
 	}
 	else if (pid < 0)
 		perror("fork error");
