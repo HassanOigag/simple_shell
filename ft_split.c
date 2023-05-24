@@ -58,6 +58,7 @@ char	**ft_split(char *s, char c)
 {
 	int			counter;
 	char		**words;
+	char *word;
 
 	counter = 0;
 	words = (char **) malloc(sizeof(char *) * (count_words(s, c) + 1));
@@ -69,7 +70,8 @@ char	**ft_split(char *s, char c)
 			s++;
 		if (*s && *s != c)
 		{
-			words[counter] = ft_substr(s, 0, wordlen(s, c));
+			word = ft_substr(s, 0, wordlen(s, c));
+			words[counter] = word;
 			counter++;
 			while (*s && *s != c)
 				s++;

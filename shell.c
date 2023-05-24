@@ -8,7 +8,7 @@
  *Return: void
  */
 
-void execute_command(char *cmd, char __attribute__((unused))*path, char **env)
+void execute_command(char *cmd, char *path, char **env)
 {
 	char **words;
 
@@ -49,6 +49,8 @@ void execute_command(char *cmd, char __attribute__((unused))*path, char **env)
 		perror("fork error");
 	else
 		wait(NULL);
+	free_words(words);
+	free(path);
 }
 
 /**
@@ -83,7 +85,7 @@ int main(int argc, char **argv, char **env)
 	char *path;
 	(void) argc;
 	(void) argv;
-
+	
 	path = getenv("PATH");
 	while (1)
 	{
