@@ -100,6 +100,7 @@ int main(int argc, char **argv, char **env)
 		remove_new_line(&line);
 		if (strcmp(line, "exit") == 0)
 		{
+			free(line);
 			ft_putstr("exit\n");
 			return (0);
 		}
