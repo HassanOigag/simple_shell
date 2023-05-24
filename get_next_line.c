@@ -1,17 +1,11 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hoigag <hoigag@student.1337.ma>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/25 10:28:01 by hoigag            #+#    #+#             */
-/*   Updated: 2023/05/03 09:21:03 by hoigag           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "shell.h"
 
+/**
+* read_to_stash - reads from an fd and stores in stash
+* @fd: the file descriptor
+* @stash: the file to store
+* Return: read string
+*/
 
 char	*read_to_stash(int fd, char *stash)
 {
@@ -26,15 +20,21 @@ char	*read_to_stash(int fd, char *stash)
 	{
 		r = read(fd, buffer, BUFFER_SIZE);
 		if (r == -1)
-			break ;
+			break;
 		buffer[r] = '\0';
 		stash = ft_strjoin(stash, buffer);
 		if (has_new_line(buffer))
-			break ;
+			break;
 	}
 	free(buffer);
 	return (stash);
 }
+
+/**
+* get_line_from_stash - gets the line from stash
+* @stash: the stash
+* Return: returns the line
+*/
 
 char	*get_line_from_stash(char *stash)
 {
@@ -49,6 +49,12 @@ char	*get_line_from_stash(char *stash)
 	line = ft_substr(stash, 0, i + 1);
 	return (line);
 }
+
+/**
+* get_new_stash - remove the line from stash
+* @stash: the stash
+* Return: returns the new stash
+*/
 
 char	*get_new_stash(char *stash)
 {
@@ -67,6 +73,12 @@ char	*get_new_stash(char *stash)
 	free(stash);
 	return (new_stash);
 }
+
+/**
+* get_next_line - reads line by line from a file descriptor
+* @fd: the file descriptor
+* Return: the line
+*/
 
 char	*get_next_line(int fd)
 {

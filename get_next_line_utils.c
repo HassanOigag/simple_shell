@@ -1,16 +1,12 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hoigag <hoigag@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/02 14:26:41 by hoigag            #+#    #+#             */
-/*   Updated: 2022/11/02 14:30:35 by hoigag           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "shell.h"
+
+/**
+* ft_memcpy - copies memory from one block to another
+* @dst: the destination
+* @src:  the source
+* @n: the number to copy
+* Return: destionation
+*/
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
@@ -27,6 +23,14 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	}
 	return (dst);
 }
+
+/**
+* ft_substr - returns a part of a string
+* @s: the string in hand
+* @start: where to start the new string
+* @len: the len to cpy
+* Return: the new string
+*/
 
 char	*ft_substr(char	*s, unsigned int start, size_t len)
 {
@@ -46,6 +50,13 @@ char	*ft_substr(char	*s, unsigned int start, size_t len)
 	return (substr);
 }
 
+/**
+* ft_strjoin - joins two stings together
+* @s1: the first string
+* @s2: the second string
+* Return: the joined string
+*/
+
 char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*str;
@@ -64,9 +75,16 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (str);
 }
 
+/**
+* has_new_line - checks if there is new line
+* @s: the stirng in hand
+* Return: int
+*/
+
 int has_new_line(char *s)
 {
 	int i = 0;
+
 	while (s[i] && s[i] != '\n')
 		i++;
 	return (s[i] == '\n');

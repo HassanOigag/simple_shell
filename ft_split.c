@@ -1,5 +1,12 @@
 #include "shell.h"
 
+/**
+* count_words - countes the words in string
+* @s: the string in hand
+* @c: the character to split by
+* Return: int
+*/
+
 static int	count_words(char *s, char c)
 {
 	int		counter;
@@ -23,6 +30,13 @@ static int	count_words(char *s, char c)
 	return (counter);
 }
 
+/**
+* wordlen - counts the length of a word
+* @s: the string in hand
+* @c: the end of the word
+* Return: int
+*/
+
 static int	wordlen(char *s, char c)
 {
 	int	i;
@@ -32,6 +46,13 @@ static int	wordlen(char *s, char c)
 		i++;
 	return (i);
 }
+
+/**
+* ft_split - split the string into words
+* @s: the stirng in hand
+* @c: the char to split by
+* Return: an array of strings
+*/
 
 char	**ft_split(char *s, char c)
 {

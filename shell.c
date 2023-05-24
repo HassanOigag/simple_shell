@@ -74,15 +74,15 @@ void printenv(char **env)
  * @argc: param
  * @argv: param
  * @env: envirenement
- * @__attribute__: att
  * Return: int
  */
 
-int main(int __attribute__((unused))argc,
-		char __attribute__((unused))**argv, char **env)
+int main(int argc, char **argv, char **env)
 {
 	char *line = NULL;
 	char *path;
+	(void) ac;
+	(void *) argv;
 
 	path = getenv("PATH");
 	while (1)
