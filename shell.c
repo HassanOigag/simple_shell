@@ -1,6 +1,19 @@
 #include "shell.h"
 
 /**
+ * sigintHandler - handles the SIGINT signal
+ * @sig_num: signal number
+ * Return: void
+ */
+
+void sigintHandler(int sig_num)
+{
+	(void)sig_num;
+	signal(SIGINT, sigintHandler);
+	fflush(stdout);
+}
+
+/**
  *execute_command - executes a command
  *@cmd:  the command to be executed
  *@path: the path env variable
@@ -89,6 +102,7 @@ int main(int argc, char **argv, char **env)
 	(void) argv;
 
 	path = ft_getenv("PATH", env);
+	sigintHandler(0);
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
