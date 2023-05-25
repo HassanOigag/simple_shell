@@ -6,7 +6,7 @@
  * Return: pointer
  */
 
-char *ftft_getenv(char *name)
+char *ft_getenv(char *name)
 {
 	char **env = NULL, *var = NULL, *value = NULL;
 	int i = 0, j = 0, len = 0;
