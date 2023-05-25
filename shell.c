@@ -1,92 +1,6 @@
 #include "shell.h"
 
 /**
- * sigintHandler - handles the SIGINT signal
- * @sig_num: signal number
- * Return: void
- */
-
-void sigintHandler(int sig_num)
-{
-	(void)sig_num;
-	signal(SIGINT, sigintHandler);
-	fflush(stdout);
-}
-
-/**
- *execute_command - executes a command
- *@cmd:  the command to be executed
- *@path: the path env variable
- *@env: envirenement
- *Return: void
- */
-
-void execute_command(char *cmd, char *path, char **env)
-{
-	char **words;
-
-	int pid;
-	char *full_path;
-
-	words = ft_split(cmd, ' ');
-	if (!words[0])
-	{
-		free_words(words);
-		return;
-	}
-	if (words[0][0] == '/' && access(words[0], F_OK) != 0)
-	{
-		perror("./shell");
-		free_words(words);
-		return;
-	}
-	else if (words[0][0] == '/' && access(words[0], F_OK) == 0)
-		full_path = _strdup(words[0]);
-	else
-		full_path = is_file_in_path(path, words[0]);
-	if (!full_path)
-	{
-		perror("./shell");
-		free_words(words);
-		return;
-	}
-	pid = fork();
-	if (pid == 0)
-	{
-		if (execve(full_path, words, env) == -1)
-		{
-			perror("./shell");
-			exit(15);
-		}
-	}
-	else if (pid < 0)
-		perror("fork error");
-	else
-		wait(NULL);
-	free(full_path);
-	free_words(words);
-}
-
-
-/**
- * printenv - prints the env
- * @env: array of strings
- * Return: void
- */
-
-void printenv(char **env)
-{
-	int i = 0;
-
-	while (env[i])
-	{
-		ft_putstr(env[i]);
-		write(1, "\n", 1);
-		i++;
-	}
-}
-
-/**
  * main - the entry point
  * @argc: param
  * @argv: param
@@ -96,39 +10,38 @@ void printenv(char **env)
 
 int main(int argc, char **argv, char **env)
 {
-	char *line = NULL;
-	char *path;
-	(void) argc;
-	(void) argv;
+	char *line = NULL, **tokens = NULL;
+	size_t len = 0;
+	ssize_t read = 0;
+	int status = 0;
 
-	path = ft_getenv("PATH", env);
+	(void)argc;
 	sigintHandler(0);
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, "$ ", 2);
-		line = get_next_line(0);
-		if (!line)
+		read = getline(&line, &len, stdin);
+		if (read == -1)
 		{
 			if (isatty(STDIN_FILENO))
 				write(STDOUT_FILENO, "\n", 1);
-			free(path);
-			return (0);
+			break;
 		}
-		remove_new_line(&line);
-		if (strcmp(line, "exit") == 0)
+		if (line[0] == '\n')
+			continue;
+		cut_string(line);
+		tokens = tokenize(line);
+		if (tokens == NULL)
+			continue;
+		if (tokens[0] == NULL)
 		{
-			free(path);
-			free(line);
-			ft_putstr("exit\n");
-			return (0);
+			free(tokens);
+			continue;
 		}
-		if (strcmp(line, "env") == 0)
-			printenv(env);
-		if (line[0])
-			execute_command(line, path, env);
-		free(line);
+		status = exec(tokens, argv, env, line);
+		free(tokens);
 	}
-	free(path);
-	return (0);
+	free(line);
+	return (status);
 }

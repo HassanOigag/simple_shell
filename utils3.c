@@ -1,54 +1,111 @@
 #include "shell.h"
 
 /**
-* ft_strncmp - compares two strings
-* @s1: the frist string
-* @s2: the second string
-* @n: numbers of char to compare
-* Return: int
-*/
+ * p_valeur - prints a value
+ * @val: value to be printed
+ * Return: void
+ */
 
-static int    ft_strncmp(const char *s1, const char *s2, size_t n)
+void p_valeur(int val)
 {
-    size_t    i;
+	char *str = NULL;
 
-    i = 0;
-    if (!n)
-        return (0);
-    while ((s2[i] || s1[i]) && i < n - 1 && s1[i] == s2[i])
-        i++;
-    return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	str = _itoa(val);
+	write(STDOUT_FILENO, str, _strlen(str));
+	write(STDOUT_FILENO, "\n", 1);
+	free(str);
 }
 
 /**
-* ft_getenv - gets the env variable
-* @name: the env name
-* @env: env
-* Return: char *
+ * _isnumber - checks if a string is a number
+ * @str: string to check
+ * Return: 0 if number, 1 if not
+ */
+
+int _isnumber(char *str)
+{
+	int i = 0;
+
+	while (str[i] != '\0')
+	{
+		if ((str[i] < '0' || str[i] > '9') && str[i] != '-')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+/**
+* ft_memcpy - copies memory from one block to another
+* @dst: the destination
+* @src:  the source
+* @n: the number to copy
+* Return: destionation
 */
 
-char    *ft_getenv(char *name, char **env)
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-    char    **values;
-    char    *value;
-    int        name_len;
-    int        i;
+	size_t	i;
 
-    value = NULL;
-    values = NULL;
-    name_len = _strlen(name);
-    i = 0;
-    while (env[i])
-    {
-        if (ft_strncmp(env[i], name, name_len) == 0
-            && env[i][name_len] == '=')
-        {
-            values = ft_split(env[i], '=');
-            value = _strdup(values[1]);
-            free_words(values);
-            break ;
-        }
-        i++;
-    }
-    return (value);
+	if (src || dst)
+	{
+		i = 0;
+		while (i < n)
+		{
+			((unsigned char *)dst)[i] = ((unsigned char *)src)[i];
+			i++;
+		}
+	}
+	return (dst);
+}
+
+/**
+* ft_substr - returns a part of a string
+* @s: the string in hand
+* @start: where to start the new string
+* @len: the len to cpy
+* Return: the new string
+*/
+
+char	*ft_substr(char	*s, unsigned int start, size_t len)
+{
+	char	*substr;
+
+	if (!s)
+		return (NULL);
+	if ((int)start > _strlen(s))
+		return (_strdup(""));
+	if ((int) (start + len) > _strlen(s))
+		len = _strlen(s) - start;
+	substr = malloc(sizeof(char) * (len + 1));
+	if (!substr)
+		return (NULL);
+	ft_memcpy(substr, s + start, len);
+	substr[len] = '\0';
+	return (substr);
+}
+
+
+/**
+* ft_strjoin - joins two stings together
+* @s1: the first string
+* @s2: the second string
+* Return: the joined string
+*/
+
+char	*ft_strjoin(char *s1, char *s2)
+{
+	char	*str;
+	int		size;
+
+	if (!s1)
+		s1 = _strdup("");
+	size = _strlen(s1) + _strlen(s2);
+	str = malloc(sizeof(char) * (size + 1));
+	if (!str)
+		return (NULL);
+	ft_memcpy(str, s1, _strlen(s1));
+	ft_memcpy(str + _strlen(s1), s2, _strlen(s2));
+	str[size] = '\0';
+	free(s1);
+	return (str);
 }
