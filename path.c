@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * make_path - creates a path
+ * m_pat - creates a path
  * @path: path
  * @cmd: command
  * Return: pointer
@@ -21,7 +21,7 @@ char *m_pat(char *path, char *cmd)
 }
 
 /**
- * g_path - gets the path
+ * g_pat - gets the path
  * @cmd: command
  * Return: path
  */

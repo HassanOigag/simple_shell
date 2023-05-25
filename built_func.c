@@ -3,7 +3,7 @@
 /**
  * pr_to - print tokens
  * @tokens: array
- * @i: index of the token
+ * @start: index of the token
  * Return: void
  */
 

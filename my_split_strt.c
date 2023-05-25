@@ -10,28 +10,27 @@
 
 int _strspn(char *str, const char *accept)
 {
-    int i = 0, j = 0, count = 0;
+	int i = 0, j = 0, count = 0;
 
-    while (str[i] != '\0')
-    {
-        j = 0;
-        while (accept[j] != '\0')
-        {
-            if (str[i] == accept[j])
-            {
-                count++;
-                break;
-            }
-            j++;
-        }
-        if (accept[j] == '\0')
-        {
-            break;
-        }
-        i++;
-    }
-
-    return count;
+	while (str[i] != '\0')
+	{
+		j = 0;
+		while (accept[j] != '\0')
+		{
+			if (str[i] == accept[j])
+			{
+				count++;
+				break;
+			}
+			j++;
+		}
+		if (accept[j] == '\0')
+		{
+			break;
+		}
+		i++;
+	}
+	return (count);
 }
 
 /**
@@ -44,23 +43,22 @@ int _strspn(char *str, const char *accept)
 
 char *_strpbrk(char *str, const char *accept)
 {
-    int i = 0, j = 0;
+	int i = 0, j = 0;
 
-    while (str[i] != '\0')
-    {
-        j = 0;
-        while (accept[j] != '\0')
-        {
-            if (str[i] == accept[j])
-            {
-                return (str + i);
-            }
-            j++;
-        }
-        i++;
-    }
-
-    return NULL;
+	while (str[i] != '\0')
+	{
+		j = 0;
+		while (accept[j] != '\0')
+		{
+			if (str[i] == accept[j])
+			{
+				return (str + i);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (NULL);
 }
 
 /**
@@ -72,40 +70,30 @@ char *_strpbrk(char *str, const char *accept)
 
 char *my_strtok(char *str, const char *delim)
 {
-    static char *lastToken = NULL;
-    char *token;
+	char *lastToken = NULL;
+	char *token;
 
-    if (str == NULL)
-    {
-        str = lastToken;
-    }
-
-    if (str == NULL)
-    {
-        return NULL;
-    }
-
-    token = str;
-    str += _strspn(str, delim);
-
-    if (*str == '\0')
-    {
-        lastToken = NULL;
-        return NULL;
-    }
-
-    token = str;
-    str = _strpbrk(str, delim);
-
-    if (str == NULL)
-    {
-        lastToken = NULL;
-    }
-    else
-    {
-        *str = '\0';
-        lastToken = str + 1;
-    }
-
-    return token;
+	if (str == NULL)
+	{
+		str = lastToken;
+	}
+	if (str == NULL)
+		return (NULL);
+	token = str;
+	str += _strspn(str, delim);
+	if (*str == '\0')
+	{
+		lastToken = NULL;
+		return (NULL);
+	}
+	token = str;
+	str = _strpbrk(str, delim);
+	if (str == NULL)
+		lastToken = NULL;
+	else
+	{
+		*str = '\0';
+		lastToken = str + 1;
+	}
+	return (token);
 }
