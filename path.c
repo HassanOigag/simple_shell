@@ -1,13 +1,13 @@
 #include "shell.h"
 
 /**
- * m_pat - creates a path
- * @path: path
- * @cmd: command
- * Return: pointer
+ * make_path - creates a path to a command
+ * @path: path to the command
+ * @cmd: command to create the path to
+ * Return: pointer to the path
  */
 
-char *m_pat(char *path, char *cmd)
+char *make_path(char *path, char *cmd)
 {
 	char *cmd_path = NULL;
 
@@ -21,19 +21,19 @@ char *m_pat(char *path, char *cmd)
 }
 
 /**
- * g_pat - gets the path
- * @cmd: command
- * Return: path
+ * get_path - gets the path of a command
+ * @cmd: command to get the path of
+ * Return: path of the command
  */
 
-char *g_pat(char *cmd)
+char *get_path(char *cmd)
 {
 	char *path = NULL, *path_copy = NULL, **tokens = NULL, *cmd_path = NULL;
 	struct stat st;
 
 	if (stat(cmd, &st) == 0)
 		return (cmd);
-	if (cmd == NULL)
+	if (!cmd)
 		return (NULL);
 	if (cmd[0] == '/')
 	{
@@ -42,14 +42,21 @@ char *g_pat(char *cmd)
 		return (NULL);
 	}
 	path = _getenv("PATH");
-	path_copy = _strdup(path);
+	path_copy = _strdup(path);	
 	tokens = ft_split(path_copy, ":");
 	while (*tokens)
 	{
-		cmd_path = m_pat(*tokens, cmd);
+		cmd_path = make_path(*tokens, cmd);
 		if (stat(cmd_path, &st) == 0)
 		{
 			free(path_copy);
+			int i = 0;
+			while (tokens[i])
+			{
+				free(tokens[i]);
+				i++;
+			}
+			free(tokens);
 			return (cmd_path);
 		}
 		free(cmd_path);

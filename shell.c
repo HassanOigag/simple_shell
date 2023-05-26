@@ -11,8 +11,6 @@
 int main(int argc, char **argv, char **env)
 {
 	char *line = NULL, **tokens = NULL;
-	size_t len = 0;
-	ssize_t read = 0;
 	int status = 0;
 
 	(void)argc;
@@ -20,28 +18,36 @@ int main(int argc, char **argv, char **env)
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
-			write(STDOUT_FILENO, "$ ", 2);
-		read = getline(&line, &len, stdin);
-		if (read == -1)
+			_putstr("$ ");
+		line = get_next_line(STDIN_FILENO);
+		if (!line)
 		{
 			if (isatty(STDIN_FILENO))
-				write(STDOUT_FILENO, "\n", 1);
+				_putchar('\n');
+			free(line);
 			break;
 		}
 		if (line[0] == '\n')
+		{
+			free(line);	
 			continue;
+		}
 		cut_string(line);
 		tokens = ft_split(line, " \t\r\n");
-		if (tokens == NULL)
-			continue;
-		if (tokens[0] == NULL)
+		if (!tokens)
 		{
-			free(tokens);
+			free(line);
+			continue;
+		}
+		if (!tokens[0])
+		{
+			free(line);
+			free_tokens(tokens);
 			continue;
 		}
 		status = execute(tokens, argv, env, line);
-		free(tokens);
+		free(line);
+		free_tokens(tokens);
 	}
-	free(line);
 	return (status);
 }

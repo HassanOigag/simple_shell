@@ -1,30 +1,20 @@
 #include "shell.h"
 
-/**
- * print_tokens - print tokens
- * @tokens: array of tokens
- * @i: index of the token to start printing from
- * Return: void
- */
-
-void print_tokens(char **tokens, int i)
+void _putchar(int c)
 {
-	int j = 0;
+	write(STDOUT_FILENO, &c, 1);
+}
 
-	while (tokens[i] != NULL)
+void _putstr(char *str)
+{
+	int i = 0;
+
+	while (str[i])
 	{
-		j = 0;
-		while (tokens[i][j] != '\0')
-		{
-			write(STDOUT_FILENO, &tokens[i][j], 1);
-			j++;
-		}
-		if (tokens[i + 1] != NULL)
-			write(STDOUT_FILENO, " ", 1);
+		_putchar(str[i]);
 		i++;
 	}
 }
-
 
 /**
  * print_env - prints the environment variables
@@ -33,17 +23,12 @@ void print_tokens(char **tokens, int i)
 
 void print_env(char **env)
 {
-	int i = 0, j = 0;
+	int i = 0;
 
 	while (env[i] != NULL)
 	{
-		j = 0;
-		while (env[i][j] != '\0')
-		{
-			write(STDOUT_FILENO, &env[i][j], 1);
-			j++;
-		}
-		write(STDOUT_FILENO, "\n", 1);
+		_putstr(env[i]);
+		_putchar('\n');
 		i++;
 	}
 }

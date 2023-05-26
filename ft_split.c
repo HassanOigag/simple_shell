@@ -45,9 +45,7 @@ static int count_words(char *s, char *delimiters)
     while (s[i] != '\0')
     {
         if (_strchr(delimiters, s[i]) != NULL)
-        {
             found = 0;
-        }
         else if (found == 0)
         {
             found = 1;
@@ -68,10 +66,8 @@ static int wordlen(char *s, char *delimiters)
 {
     int i = 0;
 
-    while (s[i] != '\0' && _strchr(delimiters, s[i]) == NULL)
-    {
+    while (s[i] && !_strchr(delimiters, s[i]))
         i++;
-    }
     return i;
 }
 
@@ -90,33 +86,21 @@ char **ft_split(char *s, char *delimiters)
     counter = 0;
     words = (char **)malloc(sizeof(char *) * (count_words(s, delimiters) + 1));
     if (!words)
-    {
         return NULL;
-    }
 
-    while (*s != '\0')
+    while (*s)
     {
-        while (*s != '\0' && _strchr(delimiters, *s) != NULL)
-        {
+        while (*s && _strchr(delimiters, *s))
             s++;
-        }
-
-        if (*s != '\0' && _strchr(delimiters, *s) == NULL)
+        if (*s && !_strchr(delimiters, *s))
         {
             int word_length = wordlen(s, delimiters);
             word = (char *)malloc(sizeof(char) * (word_length + 1));
             if (!word)
             {
-                // Handle memory allocation error
-                // Free previously allocated memory before returning
-                for (int j = 0; j < counter; j++)
-                {
-                    free(words[j]);
-                }
-                free(words);
+                free_tokens(words);
                 return NULL;
             }
-
             _strncpy(word, s, word_length);
             word[word_length] = '\0';
             words[counter] = word;
@@ -124,7 +108,6 @@ char **ft_split(char *s, char *delimiters)
             s += word_length;
         }
     }
-
     words[counter] = NULL;
     return words;
 }

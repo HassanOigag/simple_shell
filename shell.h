@@ -33,11 +33,13 @@ char *_getenv(char *name);
 char *make_path(char *path, char *cmd);
 char *get_path(char *cmd);
 int execute(char **tokens, char **argv, char **env, char *line);
-void ffree(char **ptr);
+void free_tokens(char **ptr);
 int builtins(char **tokens, char **argv, char **env, char *line);
 int _atoi(char *str);
 void cut_string(char *str);
 char *_itoa(int num);
 int _isnumber(char *str);
+void _putchar(int c);
+void _putstr(char *str);
 
 #endif

@@ -12,7 +12,7 @@ char *_getenv(char *name)
 	int i = 0, j = 0, len = 0;
 
 	env = environ;
-	while (env[i] != NULL)
+	while (env[i])
 	{
 		var = env[i];
 		len = _strlen(name);
