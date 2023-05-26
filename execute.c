@@ -107,13 +107,15 @@ int execute(char **tokens, char **argv, char **env, char *line)
 		full_path = _strdup(tokens[0]);
 	else
 		full_path = is_file_in_path(path, tokens[0]);
-	if (!full_path)
+	if (!full_path || access(full_path, X_OK) != 0)
 	{
 		writerr(tokens, argv);
+		if (full_path)
+			free(full_path);
 		get_last_exit(1, 127);
 		return (1);
 	}
-	if (!access(full_path, X_OK))
+	if (access(full_path, X_OK) == 0)
 	{
 		child_pid = fork();
 		if (child_pid == -1)
@@ -128,7 +130,7 @@ int execute(char **tokens, char **argv, char **env, char *line)
 			{
 				perror(argv[0]);	
 				free(full_path);
-				exit(1);
+				exit(127);
 			}
 		}
 		else
