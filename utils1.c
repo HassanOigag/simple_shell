@@ -1,4 +1,4 @@
-#include "main.h"
+#include "shell.h"
 
 /**
  * _strlen - returns the length of a string
@@ -10,7 +10,7 @@ int _strlen(char *str)
 {
 	int i = 0;
 
-	while (str[i] != '\0')
+	while (str[i])
 		i++;
 	return (i);
 }
@@ -82,19 +82,27 @@ void sigintHandler(int sig_num)
  * Return: integer value of the string
  */
 
-int _atoi(char *str)
+int	_atoi(char *str)
 {
-	int i = 0, sign = 1, num = 0;
+	int	i;
+	int	sign;
+	int	res;
 
-	while (str[i] != '\0')
+	i = 0;
+	res = 0;
+	sign = 1;
+	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
 			sign *= -1;
-		if (str[i] >= '0' && str[i] <= '9')
-			num = num * 10 + sign * (str[i] - '0');
-		if (num != 0 && !(str[i] >= '0' && str[i] <= '9'))
-			break;
 		i++;
 	}
-	return (num);
+	while (str[i] && (str[i] >= '0' && str[i] <= '9'))
+	{
+		res = res * 10 + (str[i] - 48);
+		i++;
+	}
+	return (res * sign);
 }

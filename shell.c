@@ -1,4 +1,4 @@
-#include "main.h"
+#include "shell.h"
 
 /**
  * main - starting point of the program
@@ -31,7 +31,7 @@ int main(int argc, char **argv, char **env)
 		if (line[0] == '\n')
 			continue;
 		cut_string(line);
-		tokens = tokenize(line);
+		tokens = ft_split(line, " \t\r\n");
 		if (tokens == NULL)
 			continue;
 		if (tokens[0] == NULL)

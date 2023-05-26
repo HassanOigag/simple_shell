@@ -1,5 +1,5 @@
-#ifndef _MAIN_H_
-#define _MAIN_H_
+#ifndef SHELL_H
+#define SHELL_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,9 +11,17 @@
 #include <fcntl.h>
 #include <errno.h>
 
+#define BUFFER_SIZE 5
+
+
 extern char **environ;
 
-char **tokenize(char *line);
+char	*ft_strjoin(char *s1, char *s2);
+void	*_memcpy(void *dst, const void *src, size_t n);
+char	*get_next_line(int fd);
+char **ft_split(char *s, char *delimiters);
+char	*ft_substr(char *s, int start, int len);
+char *_strchr(const char *s, int c);
 int get_last_exit(int action, int status);
 int _strlen(char *str);
 int _strncmp(char *str1, char *str2, int n);
@@ -30,7 +38,6 @@ int builtins(char **tokens, char **argv, char **env, char *line);
 int _atoi(char *str);
 void cut_string(char *str);
 char *_itoa(int num);
-void print_val(int val);
 int _isnumber(char *str);
 
-#endif /* _MAIN_H_ */
+#endif

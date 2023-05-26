@@ -1,13 +1,13 @@
 #include "shell.h"
 
 /**
- * make_path - creates a path to a command
- * @path: path to the command
- * @cmd: command to create the path to
- * Return: pointer to the path
+ * m_pat - creates a path
+ * @path: path
+ * @cmd: command
+ * Return: pointer
  */
 
-char *make_path(char *path, char *cmd)
+char *m_pat(char *path, char *cmd)
 {
 	char *cmd_path = NULL;
 
@@ -21,12 +21,12 @@ char *make_path(char *path, char *cmd)
 }
 
 /**
- * get_path - gets the path of a command
- * @cmd: command to get the path of
- * Return: path of the command
+ * g_pat - gets the path
+ * @cmd: command
+ * Return: path
  */
 
-char *get_path(char *cmd)
+char *g_pat(char *cmd)
 {
 	char *path = NULL, *path_copy = NULL, **tokens = NULL, *cmd_path = NULL;
 	struct stat st;
@@ -46,7 +46,7 @@ char *get_path(char *cmd)
 	tokens = ft_split(path_copy, ":");
 	while (*tokens)
 	{
-		cmd_path = make_path(*tokens, cmd);
+		cmd_path = m_pat(*tokens, cmd);
 		if (stat(cmd_path, &st) == 0)
 		{
 			free(path_copy);

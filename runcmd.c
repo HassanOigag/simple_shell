@@ -1,4 +1,4 @@
-#include "main.h"
+#include "shell.h"
 
 /**
  * writerr - writes an error message to stderr
