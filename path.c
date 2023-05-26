@@ -28,7 +28,7 @@ char *m_pat(char *path, char *cmd)
 
 char *g_pat(char *cmd)
 {
-	char *path = NULL, *path_copy = NULL, *token = NULL, *cmd_path = NULL;
+	char *path = NULL, *path_copy = NULL, **tokens = NULL, *cmd_path = NULL;
 	struct stat st;
 
 	if (stat(cmd, &st) == 0)
@@ -43,17 +43,17 @@ char *g_pat(char *cmd)
 	}
 	path = ft_getenv("PATH");
 	path_copy = _strdup(path);
-	token = my_strtok(path_copy, ":");
-	while (token != NULL)
+	tokens = ft_split(path_copy, ":");
+	while (*tokens)
 	{
-		cmd_path = m_pat(token, cmd);
+		cmd_path = m_pat(*tokens, cmd);
 		if (stat(cmd_path, &st) == 0)
 		{
 			free(path_copy);
 			return (cmd_path);
 		}
 		free(cmd_path);
-		token = (my_strtok(NULL, ":"));
+		tokens++;
 	}
 	free(path_copy);
 	return (NULL);

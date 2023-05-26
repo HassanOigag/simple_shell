@@ -42,6 +42,7 @@ int has_new_line(char *s);
 int _strspn(char *str, const char *accept);
 char *_strpbrk(char *str, const char *accept);
 char *my_strtok(char *str, const char *delim);
+char **ft_split(char *s, char *delimiters);
 
 
 
