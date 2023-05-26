@@ -29,7 +29,7 @@ int main(int argc, char **argv, char **env)
 		}
 		if (line[0] == '\n')
 		{
-			free(line);	
+			free(line);
 			continue;
 		}
 		cut_string(line);

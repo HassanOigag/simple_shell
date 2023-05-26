@@ -1,9 +1,21 @@
 #include "shell.h"
 
+/**
+ * _putchar - prints a character
+ * @c: the character to print
+ * Return: void
+ */
+
 void _putchar(int c)
 {
 	write(STDOUT_FILENO, &c, 1);
 }
+
+/**
+ * _putstr - prints a string
+ * @str: the string to print
+ * Return: void
+ */
 
 void _putstr(char *str)
 {

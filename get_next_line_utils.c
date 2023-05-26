@@ -20,6 +20,14 @@ char *_strcpy(char *dest, char *src)
 	return (dest);
 }
 
+/**
+ * _memcpy - memory copy
+ * @dst: destination
+ * @src: source
+ * @n: number of memory blocks to copy
+ * Return: destination
+ */
+
 void	*_memcpy(void *dst, const void *src, size_t n)
 {
 	size_t	i;
@@ -35,6 +43,13 @@ void	*_memcpy(void *dst, const void *src, size_t n)
 	}
 	return (dst);
 }
+
+/**
+ * ft_strjoin - joins two strings
+ * @s1: the first string
+ * @s2: the second  string
+ * Return: the joined string
+ */
 
 char	*ft_strjoin(char *s1, char *s2)
 {
@@ -72,3 +87,4 @@ int _isnumber(char *str)
 	}
 	return (0);
 }
+

@@ -1,5 +1,13 @@
 #include "shell.h"
 
+/**
+* ft_substr - finds a substring
+* @s: the string in hand
+* @start: where to start substring
+* @len: the length of the substring
+* Return: the substring
+*/
+
 char	*ft_substr(char *s, int start, int len)
 {
 	char	*substr;
@@ -18,6 +26,13 @@ char	*ft_substr(char *s, int start, int len)
 	return (substr);
 }
 
+/**
+* read_to_stash - reads from fd to a static var
+* @fd: the fd to read from
+* @stash: the static var to store in
+* Return: text read from fd
+*/
+
 char	*read_to_stash(int fd, char *stash)
 {
 	int		r;
@@ -31,15 +46,21 @@ char	*read_to_stash(int fd, char *stash)
 	{
 		r = read(fd, buffer, BUFFER_SIZE);
 		if (r == -1)
-			break ;
+			break;
 		buffer[r] = '\0';
 		stash = ft_strjoin(stash, buffer);
 		if (_strchr(buffer, '\n'))
-			break ;
+			break;
 	}
 	free(buffer);
 	return (stash);
 }
+
+/**
+* get_line_from_stash - gets the line ftom stash
+* @stash: the stash
+* Return: returns the line
+*/
 
 char	*get_line_from_stash(char *stash)
 {
@@ -50,10 +71,16 @@ char	*get_line_from_stash(char *stash)
 		return (NULL);
 	i = 0;
 	while (stash[i] && stash[i] != '\n')
-		i++;
+		i++
 	line = ft_substr(stash, 0, i + 1);
 	return (line);
 }
+
+/**
+* get_new_stash - gets the after the line
+* @stash: the stash
+* Return: return the rest after the line
+*/
 
 char	*get_new_stash(char *stash)
 {
@@ -72,6 +99,12 @@ char	*get_new_stash(char *stash)
 	free(stash);
 	return (new_stash);
 }
+
+/**
+* get_next_line - read a line from fd
+* @fd: the file descriptor
+* Return: the line read
+*/
 
 char	*get_next_line(int fd)
 {

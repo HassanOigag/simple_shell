@@ -43,7 +43,7 @@ char *get_path(char *cmd)
 		return (NULL);
 	}
 	path = _getenv("PATH");
-	path_copy = _strdup(path);	
+	path_copy = _strdup(path);
 	tokens = ft_split(path_copy, ":");
 	while (*tokens)
 	{

@@ -26,7 +26,7 @@ char *_strcat(char *dest, char *src)
 }
 
 /**
- * ffree - frees a double pointer
+ * free_tokens - frees a double pointer
  * @ptr: double pointer to be freed
  * Return: void
  */
@@ -65,6 +65,11 @@ void cut_string(char *str)
 	}
 }
 
+/**
+ * ft_nbrlen - counts the number of digits in q number
+ * @n: the number
+ * Return: the number of digits
+ */
 
 int	ft_nbrlen(int n)
 {
@@ -83,7 +88,7 @@ int	ft_nbrlen(int n)
 
 /**
  * _itoa - converts an integer to a string
- * @num: integer to be converted
+ * @n: integer to be converted
  * Return: pointer to the converted string
  */
 
@@ -115,3 +120,4 @@ char	*_itoa(int n)
 	}
 	return (str);
 }
+

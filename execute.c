@@ -24,7 +24,7 @@ void writerr(char **tokens, char **argv)
  * Return: 0 on success, 1 on failure
  */
 
- char *join(char *s1, char *s2)
+char *join(char *s1, char *s2)
 {
 	int size = _strlen(s1) + _strlen(s2);
 	char *str = malloc(sizeof(char) * (size + 1));
@@ -99,9 +99,12 @@ int execute(char **tokens, char **argv, char **env, char *line)
 		get_last_exit(1, 127);
 		return (1);
 	}
-	else if (tokens[0][0] == '.' && tokens[0][1] == '/' && access(tokens[0], F_OK) == 0)
+	else if (tokens[0][0] == '.' && tokens[0][1] == '/'
+			&& access(tokens[0], F_OK) == 0)
 		full_path = _strdup(tokens[0]);
-	else if (tokens[0][0] == '.' && tokens[0][1] == '.' && tokens[0][1] == '.' && access(tokens[0], F_OK) == 0)
+	else if (tokens[0][0] == '.'
+			&& tokens[0][1] == '.' && tokens[0][1] == '.'
+			&& access(tokens[0], F_OK) == 0)
 		full_path = _strdup(tokens[0]);
 	else if (tokens[0][0] == '/' && access(tokens[0], F_OK) == 0)
 		full_path = _strdup(tokens[0]);
