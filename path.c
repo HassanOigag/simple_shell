@@ -30,6 +30,7 @@ char *get_path(char *cmd)
 {
 	char *path = NULL, *path_copy = NULL, **tokens = NULL, *cmd_path = NULL;
 	struct stat st;
+	int i = 0;
 
 	if (stat(cmd, &st) == 0)
 		return (cmd);
@@ -50,7 +51,7 @@ char *get_path(char *cmd)
 		if (stat(cmd_path, &st) == 0)
 		{
 			free(path_copy);
-			int i = 0;
+			i = 0;
 			while (tokens[i])
 			{
 				free(tokens[i]);

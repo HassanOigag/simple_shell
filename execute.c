@@ -26,7 +26,7 @@ void writerr(char **tokens, char **argv)
 
  char *join(char *s1, char *s2)
 {
-	int size = strlen(s1) + strlen(s2);
+	int size = _strlen(s1) + _strlen(s2);
 	char *str = malloc(sizeof(char) * (size + 1));
 	int i = 0;
 	int j = 0;
@@ -83,24 +83,16 @@ char *is_file_in_path(char *path, char *file)
 
 int execute(char **tokens, char **argv, char **env, char *line)
 {
-	// char *command = NULL;
 	pid_t child_pid = 0;
 	int status = 0;
+	char *full_path;
+	char *path = _getenv("PATH");
 
 	if (builtins(tokens, argv, env, line) == 0)
 	{
 		get_last_exit(1, 0);
 		return (0);
 	}
-	// command = get_path(tokens[0]);
-	// if (!command)
-	// {
-	// 	writerr(tokens, argv);
-	// 	get_last_exit(1, 127);
-	// 	return (1);
-	// }
-	char *full_path;
-	char *path = _getenv("PATH");
 	if (tokens[0][0] == '/' && access(tokens[0], F_OK) != 0)
 	{
 		writerr(tokens, argv);

@@ -35,15 +35,12 @@ void free_tokens(char **ptr)
 {
 	int i = 0;
 
-	// printf("freeing\n");
 	while (ptr[i])
 	{
-		// printf("freing loop\n");
 		if (ptr[i])
 			free(ptr[i]);
 		i++;
 	}
-	// printf("freeing after loop\n");
 	if (ptr)
 		free(ptr);
 }
