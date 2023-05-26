@@ -71,7 +71,7 @@ char	*get_line_from_stash(char *stash)
 		return (NULL);
 	i = 0;
 	while (stash[i] && stash[i] != '\n')
-		i++
+		i++;
 	line = ft_substr(stash, 0, i + 1);
 	return (line);
 }
