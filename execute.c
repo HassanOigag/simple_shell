@@ -99,6 +99,8 @@ int execute(char **tokens, char **argv, char **env, char *line)
 		get_last_exit(1, 127);
 		return (1);
 	}
+	else if (tokens[0][0] == '.' && tokens[0][1] == '/')
+		full_path = _strdup(tokens[0]);
 	else if (tokens[0][0] == '/' && access(tokens[0], F_OK) == 0)
 		full_path = _strdup(tokens[0]);
 	else
