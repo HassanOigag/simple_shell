@@ -30,3 +30,34 @@ char *_getenv(char *name)
 	}
 	return (value);
 }
+
+/**
+ * get_last_exit - gets the last exit code
+ * @action: 0 to get, 1 to set
+ * @status: exit code
+ * Return: last exit code
+ */
+
+int get_last_exit(int action, int status)
+{
+	static int last_exit;
+
+	if (action == 1)
+		last_exit = status;
+	return (last_exit);
+}
+
+/**
+ * writerr - writes an error message to stderr
+ * @tokens: array of tokens
+ * @argv: array of arguments
+ * Return: void
+ */
+
+void writerr(char **tokens, char **argv)
+{
+	write(STDERR_FILENO, argv[0], _strlen(argv[0]));
+	write(STDERR_FILENO, ": ", 2);
+	write(STDERR_FILENO, tokens[0], _strlen(tokens[0]));
+	write(STDERR_FILENO, ": not found\n", 12);
+}

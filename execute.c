@@ -1,27 +1,10 @@
 #include "shell.h"
 
 /**
- * writerr - writes an error message to stderr
- * @tokens: array of tokens
- * @argv: array of arguments
- * Return: void
- */
-
-void writerr(char **tokens, char **argv)
-{
-	write(STDERR_FILENO, argv[0], _strlen(argv[0]));
-	write(STDERR_FILENO, ": ", 2);
-	write(STDERR_FILENO, tokens[0], _strlen(tokens[0]));
-	write(STDERR_FILENO, ": not found\n", 12);
-}
-
-/**
- * execute - executes a command
- * @tokens: array of tokens
- * @argv: array of arguments
- * @env: array of environment variables
- * @line: line from getline
- * Return: 0 on success, 1 on failure
+ * join - join two string
+ * @s1: string one
+ * @s2: string two
+ * Return: the joined string
  */
 
 char *join(char *s1, char *s2)
@@ -81,25 +64,18 @@ char *is_file_in_path(char *path, char *file)
 	return (NULL);
 }
 
-int execute(char **tokens, char **argv, char **env, char *line)
-{
-	pid_t child_pid = 0;
-	int status = 0;
-	char *full_path;
-	char *path = _getenv("PATH");
+/**
+* get_full_path - get the full path of a command
+* @tokens: array of the command and args
+* Return: the path of the command
+*/
 
-	if (builtins(tokens, argv, env, line) == 0)
-	{
-		get_last_exit(1, 0);
-		return (0);
-	}
-	if (tokens[0][0] == '/' && access(tokens[0], F_OK) != 0)
-	{
-		writerr(tokens, argv);
-		get_last_exit(1, 127);
-		return (1);
-	}
-	else if (tokens[0][0] == '.' && tokens[0][1] == '/'
+char *get_full_path(char **tokens)
+{
+	char *path = _getenv("PATH");
+	char *full_path = NULL;
+
+	if (tokens[0][0] == '.' && tokens[0][1] == '/'
 			&& access(tokens[0], F_OK) == 0)
 		full_path = _strdup(tokens[0]);
 	else if (tokens[0][0] == '.'
@@ -110,14 +86,24 @@ int execute(char **tokens, char **argv, char **env, char *line)
 		full_path = _strdup(tokens[0]);
 	else
 		full_path = is_file_in_path(path, tokens[0]);
-	if (!full_path || access(full_path, X_OK) != 0)
-	{
-		writerr(tokens, argv);
-		if (full_path)
-			free(full_path);
-		get_last_exit(1, 127);
-		return (1);
-	}
+	return (full_path);
+}
+
+/**
+* run_command - runs a command
+* @tokens: the command array
+* @argv: command line arguments
+* @env: enviroment variables
+* Return: int
+*/
+
+int run_command(char **tokens, char **argv, char **env)
+{
+	pid_t child_pid = 0;
+	int status = 0;
+	char *full_path;
+
+	full_path = get_full_path(tokens);
 	if (access(full_path, X_OK) == 0)
 	{
 		child_pid = fork();
@@ -131,7 +117,7 @@ int execute(char **tokens, char **argv, char **env, char *line)
 		{
 			if (execve(full_path, tokens, env) == -1)
 			{
-				perror(argv[0]);	
+				perror(argv[0]);
 				free(full_path);
 				exit(127);
 			}
@@ -139,23 +125,47 @@ int execute(char **tokens, char **argv, char **env, char *line)
 		else
 			wait(&status);
 		free(full_path);
-		get_last_exit(1, 0);
 	}
 	return (status);
 }
 
 /**
- * get_last_exit - gets the last exit code
- * @action: 0 to get, 1 to set
- * @status: exit code
- * Return: last exit code
- */
+* execute - executes the command
+* @tokens: command array
+* @argv: command line arguments
+* @env: env variables
+* @line: the line of the command
+* Return: int
+**/
 
-int get_last_exit(int action, int status)
+int execute(char **tokens, char **argv, char **env, char *line)
 {
-	static int last_exit;
+	char *full_path = NULL;
+	int status;
 
-	if (action == 1)
-		last_exit = status;
-	return (last_exit);
+	if (builtins(tokens, argv, env, line) == 0)
+	{
+		get_last_exit(1, 0);
+		return (0);
+	}
+	if (tokens[0][0] == '/' && access(tokens[0], F_OK) != 0)
+	{
+		writerr(tokens, argv);
+		get_last_exit(1, 127);
+		return (1);
+	}
+	full_path = get_full_path(tokens);
+	if (!full_path || access(full_path, X_OK) != 0)
+	{
+		writerr(tokens, argv);
+		if (full_path)
+			free(full_path);
+		get_last_exit(1, 127);
+		return (1);
+	}
+	status = run_command(tokens, argv, env);
+	get_last_exit(1, 0);
+	return (status);
 }
+
+

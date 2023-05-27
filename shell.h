@@ -15,6 +15,7 @@
 
 extern char **environ;
 
+int get_last_exit(int action, int status);
 char	*ft_strjoin(char *s1, char *s2);
 void	*_memcpy(void *dst, const void *src, size_t n);
 char	*get_next_line(int fd);
@@ -40,5 +41,6 @@ char *_itoa(int num);
 int _isnumber(char *str);
 void _putchar(int c);
 void _putstr(char *str);
+void writerr(char **tokens, char **argv);
 
 #endif
