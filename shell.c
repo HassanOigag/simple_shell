@@ -1,6 +1,21 @@
 #include "shell.h"
 
 /**
+ * init_shell_struct - initializes the shell struct
+ * @shell: the shell struct to be initilized
+ * @argv: the value of argv
+ * @env: the value of env
+ * Return: void
+*/
+
+void init_shell_struct(t_shell *shell, char **argv, char **env)
+{
+	shell->argv = argv;
+	shell->env = env;
+	shell->error_counter = 0;
+}
+
+/**
  * main - starting point of the program
  * @argc: number of arguments
  * @argv: array of arguments
@@ -8,46 +23,46 @@
  * Return: 0 on success, 1 on failure
  */
 
-int main(int argc, char **argv, char **env)
+int main(int __attribute__((unused))argc, char **argv, char **env)
 {
-	char *line = NULL, **tokens = NULL;
 	int status = 0;
+	t_shell shell;
 
-	(void)argc;
+	init_shell_struct(&shell, argv, env);
 	sigintHandler(0);
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
 			_putstr("$ ");
-		line = get_next_line(STDIN_FILENO);
-		if (!line)
+		shell.line = get_next_line(STDIN_FILENO);
+		if (!shell.line)
 		{
 			if (isatty(STDIN_FILENO))
 				_putchar('\n');
-			free(line);
+			free(shell.line);
 			break;
 		}
-		if (line[0] == '\n')
+		if (shell.line[0] == '\n')
 		{
-			free(line);
+			free(shell.line);
 			continue;
 		}
-		cut_string(line);
-		tokens = ft_split(line, " \t\r\n");
-		if (!tokens)
+		cut_string(shell.line);
+		shell.tokens = ft_split(shell.line, " \t\r\n");
+		if (!shell.tokens)
 		{
-			free(line);
+			free(shell.line);
 			continue;
 		}
-		if (!tokens[0])
+		if (!shell.tokens[0])
 		{
-			free(line);
-			free_tokens(tokens);
+			free(shell.line);
+			free_tokens(shell.tokens);
 			continue;
 		}
-		status = execute(tokens, argv, env, line);
-		free(line);
-		free_tokens(tokens);
+		status = execute(&shell);
+		free(shell.line);
+		free_tokens(shell.tokens);
 	}
 	return (status);
 }

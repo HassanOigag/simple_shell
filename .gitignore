@@ -3,3 +3,7 @@ shell
 Makefile
 *.txt
 sh
+hsh
+tests
+*.bash
+*.py

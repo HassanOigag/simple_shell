@@ -51,13 +51,20 @@ int get_last_exit(int action, int status)
  * writerr - writes an error message to stderr
  * @tokens: array of tokens
  * @argv: array of arguments
+ * @error_counter: number of the error
  * Return: void
  */
 
-void writerr(char **tokens, char **argv)
+void writerr(char **tokens, char **argv, int *error_counter)
 {
+	char *err_str;
+	(*error_counter)++;
+	err_str = _itoa(*error_counter);
 	write(STDERR_FILENO, argv[0], _strlen(argv[0]));
 	write(STDERR_FILENO, ": ", 2);
+	write(STDERR_FILENO, err_str, _strlen(err_str));
+	write(STDERR_FILENO, ": ", 2);
+	free(err_str);
 	write(STDERR_FILENO, tokens[0], _strlen(tokens[0]));
 	write(STDERR_FILENO, ": not found\n", 12);
 }

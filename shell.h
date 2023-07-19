@@ -12,6 +12,24 @@
 
 #define BUFFER_SIZE 5
 
+/**
+ * struct s_shell - shell struct
+ * @argv: arguments
+ * @env: environement
+ * @line: the command line
+ * @tokens: command tokens
+ * @error_counter: number of the error
+ * Description: shell struct
+*/
+
+typedef struct s_shell
+{
+char **argv;
+char **env;
+char *line;
+char **tokens;
+int error_counter;
+}   t_shell;
 
 extern char **environ;
 
@@ -32,15 +50,15 @@ char *_strcpy(char *dest, char *src);
 char *_getenv(char *name);
 char *make_path(char *path, char *cmd);
 char *get_path(char *cmd);
-int execute(char **tokens, char **argv, char **env, char *line);
+int execute(t_shell *shell);
 void free_tokens(char **ptr);
-int builtins(char **tokens, char **argv, char **env, char *line);
+int builtins(t_shell *shell);
 int _atoi(char *str);
 void cut_string(char *str);
 char *_itoa(int num);
 int _isnumber(char *str);
 void _putchar(int c);
 void _putstr(char *str);
-void writerr(char **tokens, char **argv);
+void writerr(char **tokens, char **argv, int *error_counter);
 
 #endif

@@ -85,7 +85,11 @@ char *get_full_path(char **tokens)
 	else if (tokens[0][0] == '/' && access(tokens[0], F_OK) == 0)
 		full_path = _strdup(tokens[0]);
 	else
+	{
+		if (!path)
+			return (NULL);
 		full_path = is_file_in_path(path, tokens[0]);
+	}
 	return (full_path);
 }
 
@@ -131,39 +135,35 @@ int run_command(char **tokens, char **argv, char **env)
 
 /**
 * execute - executes the command
-* @tokens: command array
-* @argv: command line arguments
-* @env: env variables
-* @line: the line of the command
+* @shell: the shell struct
 * Return: int
 **/
 
-int execute(char **tokens, char **argv, char **env, char *line)
+int execute(t_shell *shell)
 {
 	char *full_path = NULL;
 	int status;
 
-	if (builtins(tokens, argv, env, line) == 0)
+	if (builtins(shell) == 0)
 	{
 		get_last_exit(1, 0);
 		return (0);
 	}
-	if (tokens[0][0] == '/' && access(tokens[0], F_OK) != 0)
+	if (shell->tokens[0][0] == '/' && access(shell->tokens[0], F_OK) != 0)
 	{
-		writerr(tokens, argv);
-		get_last_exit(1, 127);
-		return (1);
+		writerr(shell->tokens, shell->argv, &shell->error_counter);
+		return (get_last_exit(1, 127));
 	}
-	full_path = get_full_path(tokens);
+	full_path = get_full_path(shell->tokens);
+
 	if (!full_path || access(full_path, X_OK) != 0)
 	{
-		writerr(tokens, argv);
+		writerr(shell->tokens, shell->argv, &shell->error_counter);
 		if (full_path)
 			free(full_path);
-		get_last_exit(1, 127);
-		return (1);
+		return (get_last_exit(1, 127));
 	}
-	status = run_command(tokens, argv, env);
+	status = run_command(shell->tokens, shell->argv, shell->env);
 	get_last_exit(1, 0);
 	return (status);
 }

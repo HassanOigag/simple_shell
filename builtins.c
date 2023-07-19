@@ -88,25 +88,21 @@ int handle_exit(char **tokens, char *line)
 
 /**
  * builtins - checks if a command is a builtin
- * @tokens: array of tokens
- * @argv: array of arguments
- * @env: array of environment variables
- * @line: pointer to the line buffer
+ * @shell: the shell struct
  * Return: 0 if builtin, 1 if not
  */
 
-int builtins(char **tokens, char **argv, char **env, char *line)
+int builtins(t_shell *shell)
 {
-	(void)argv;
 
-	if (_strncmp(tokens[0], "exit", 4) == 0)
+	if (_strncmp(shell->tokens[0], "exit", 4) == 0)
 	{
-		handle_exit(tokens, line);
+		handle_exit(shell->tokens, shell->line);
 		return (0);
 	}
-	if (_strncmp(tokens[0], "env", 3) == 0)
+	if (_strncmp(shell->tokens[0], "env", 3) == 0)
 	{
-		print_env(env);
+		print_env(shell->env);
 		return (0);
 	}
 	return (1);
