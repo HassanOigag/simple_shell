@@ -58,6 +58,7 @@ int get_last_exit(int action, int status)
 void writerr(char **tokens, char **argv, int *error_counter)
 {
 	char *err_str;
+
 	(*error_counter)++;
 	err_str = _itoa(*error_counter);
 	write(STDERR_FILENO, argv[0], _strlen(argv[0]));

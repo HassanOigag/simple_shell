@@ -30,58 +30,53 @@ void _putstr(char *str)
 
 /**
  * print_env - prints the environment variables
- * @env: array of environment variables
+ * void
  */
 
-void print_env(char **env)
+void print_env(void)
 {
 	int i = 0;
+	char **env = environ;
 
-	while (env[i] != NULL)
+	while (env[i])
+		i++;
+	i--;
+	while (i >= 0)
 	{
 		_putstr(env[i]);
 		_putchar('\n');
-		i++;
+		i--;
 	}
 }
 
 /**
  * handle_exit - handles the exit builtin
- * @tokens: array of tokens
- * @line: pointer to the line buffer
+ * @shell: the shell variable
  * Return: 0 on success, 1 on failure
  */
 
-int handle_exit(char **tokens, char *line)
+int handle_exit(t_shell *shell)
 {
-	int status = 0;
-
-	if (tokens[1] == NULL)
+	if (!shell->tokens[1])
 	{
-		free(tokens);
-		free(line);
-		exit(get_last_exit(1, status));
+		free(shell->tokens);
+		free(shell->line);
+		exit(shell->status);
 	}
-	if (_isnumber(tokens[1]) == 0)
+	if (_isnumber(shell->tokens[1]))
 	{
-		status = _atoi(tokens[1]);
-		if (status < 0)
-		{
-			free(tokens);
-			free(line);
-			exit(256 + status);
-		}
-		free(tokens);
-		free(line);
-		exit(get_last_exit(1, status));
+		shell->status = _atoi(shell->tokens[1]);
+		free(shell->tokens);
+		free(shell->line);
+		exit(shell->status);
 	}
 	else
 	{
 		write(STDERR_FILENO, "Illegal number: ", 16);
-		write(STDERR_FILENO, tokens[1], _strlen(tokens[1]));
+		write(STDERR_FILENO, shell->tokens[1], _strlen(shell->tokens[1]));
 		write(STDERR_FILENO, "\n", 1);
-		get_last_exit(1, 2);
-		return (1);
+		shell->status = 2;
+		return (2);
 	}
 	return (0);
 }
@@ -95,15 +90,22 @@ int handle_exit(char **tokens, char *line)
 int builtins(t_shell *shell)
 {
 
+	if (_strncmp(shell->tokens[0], "echo", 4) == 0
+		&& _strncmp(shell->tokens[0], "$?", 2))
+	{
+		printf("%d\n", shell->status);
+		return (0);
+	}
 	if (_strncmp(shell->tokens[0], "exit", 4) == 0)
 	{
-		handle_exit(shell->tokens, shell->line);
+		handle_exit(shell);
 		return (0);
 	}
 	if (_strncmp(shell->tokens[0], "env", 3) == 0)
 	{
-		print_env(shell->env);
+		print_env();
 		return (0);
 	}
+
 	return (1);
 }

@@ -95,42 +95,41 @@ char *get_full_path(char **tokens)
 
 /**
 * run_command - runs a command
-* @tokens: the command array
-* @argv: command line arguments
-* @env: enviroment variables
+* @shell: the shell variable
 * Return: int
 */
 
-int run_command(char **tokens, char **argv, char **env)
+int run_command(t_shell *shell)
 {
 	pid_t child_pid = 0;
-	int status = 0;
 	char *full_path;
 
-	full_path = get_full_path(tokens);
+	full_path = get_full_path(shell->tokens);
 	if (access(full_path, X_OK) == 0)
 	{
 		child_pid = fork();
 		if (child_pid == -1)
 		{
-			perror(argv[0]);
+			perror(shell->argv[0]);
 			free(full_path);
 			return (1);
 		}
 		if (child_pid == 0)
 		{
-			if (execve(full_path, tokens, env) == -1)
+			if (execve(full_path, shell->tokens, shell->env) == -1)
 			{
-				perror(argv[0]);
+				perror("execve error: ");
 				free(full_path);
 				exit(127);
 			}
 		}
 		else
-			wait(&status);
+		{
+			wait(&shell->status);
+		}
 		free(full_path);
 	}
-	return (status);
+	return (shell->status % 255);
 }
 
 /**
@@ -142,20 +141,15 @@ int run_command(char **tokens, char **argv, char **env)
 int execute(t_shell *shell)
 {
 	char *full_path = NULL;
-	int status;
 
 	if (builtins(shell) == 0)
-	{
-		get_last_exit(1, 0);
-		return (0);
-	}
+		return (shell->status);
 	if (shell->tokens[0][0] == '/' && access(shell->tokens[0], F_OK) != 0)
 	{
 		writerr(shell->tokens, shell->argv, &shell->error_counter);
 		return (get_last_exit(1, 127));
 	}
 	full_path = get_full_path(shell->tokens);
-
 	if (!full_path || access(full_path, X_OK) != 0)
 	{
 		writerr(shell->tokens, shell->argv, &shell->error_counter);
@@ -163,9 +157,8 @@ int execute(t_shell *shell)
 			free(full_path);
 		return (get_last_exit(1, 127));
 	}
-	status = run_command(shell->tokens, shell->argv, shell->env);
-	get_last_exit(1, 0);
-	return (status);
+	shell->status = run_command(shell);
+	return (shell->status % 255);
 }
 
 

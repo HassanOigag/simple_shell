@@ -19,6 +19,7 @@
  * @line: the command line
  * @tokens: command tokens
  * @error_counter: number of the error
+ * @status: the status code
  * Description: shell struct
 */
 
@@ -28,6 +29,7 @@ char **argv;
 char **env;
 char *line;
 char **tokens;
+int status;
 int error_counter;
 }   t_shell;
 

@@ -13,6 +13,7 @@ void init_shell_struct(t_shell *shell, char **argv, char **env)
 	shell->argv = argv;
 	shell->env = env;
 	shell->error_counter = 0;
+	shell->status = 0;
 }
 
 /**
@@ -25,7 +26,6 @@ void init_shell_struct(t_shell *shell, char **argv, char **env)
 
 int main(int __attribute__((unused))argc, char **argv, char **env)
 {
-	int status = 0;
 	t_shell shell;
 
 	init_shell_struct(&shell, argv, env);
@@ -60,9 +60,9 @@ int main(int __attribute__((unused))argc, char **argv, char **env)
 			free_tokens(shell.tokens);
 			continue;
 		}
-		status = execute(&shell);
+		shell.status = execute(&shell);
 		free(shell.line);
 		free_tokens(shell.tokens);
 	}
-	return (status);
+	return (shell.status);
 }
