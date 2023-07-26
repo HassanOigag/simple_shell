@@ -39,13 +39,10 @@ void print_env(void)
 	char **env = environ;
 
 	while (env[i])
-		i++;
-	i--;
-	while (i >= 0)
 	{
 		_putstr(env[i]);
 		_putchar('\n');
-		i--;
+		i++;
 	}
 }
 
