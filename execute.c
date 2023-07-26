@@ -87,7 +87,10 @@ char *get_full_path(char **tokens)
 	else
 	{
 		if (!path)
+		{
+			free(full_path);
 			return (NULL);
+		}
 		full_path = is_file_in_path(path, tokens[0]);
 	}
 	return (full_path);
@@ -118,7 +121,7 @@ int run_command(t_shell *shell)
 		{
 			if (execve(full_path, shell->tokens, shell->env) == -1)
 			{
-				perror("execve error: ");
+				perror(shell->argv[0]);
 				free(full_path);
 				exit(127);
 			}
@@ -138,7 +141,7 @@ int run_command(t_shell *shell)
 * Return: int
 **/
 
-int execute(t_shell *shell)
+int	execute(t_shell *shell)
 {
 	char *full_path = NULL;
 
@@ -157,6 +160,7 @@ int execute(t_shell *shell)
 			free(full_path);
 		return (get_last_exit(1, 127));
 	}
+	free(full_path);
 	shell->status = run_command(shell);
 	return (shell->status % 255);
 }

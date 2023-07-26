@@ -72,6 +72,16 @@ int handle_exit(t_shell *shell)
 	}
 	else
 	{
+		char *err_str;
+
+		shell->error_counter++;
+		err_str = _itoa(shell->error_counter);
+		write(STDERR_FILENO, shell->argv[0], _strlen(shell->argv[0]));
+		write(STDERR_FILENO, ": ", 2);
+		write(STDERR_FILENO, err_str, _strlen(err_str));
+		write(STDERR_FILENO, ": ", 2);
+		free(err_str);
+		write(STDERR_FILENO, "exit: ", 6);
 		write(STDERR_FILENO, "Illegal number: ", 16);
 		write(STDERR_FILENO, shell->tokens[1], _strlen(shell->tokens[1]));
 		write(STDERR_FILENO, "\n", 1);
