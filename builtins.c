@@ -59,14 +59,14 @@ int handle_exit(t_shell *shell)
 {
 	if (!shell->tokens[1])
 	{
-		free(shell->tokens);
+		free_tokens(shell->tokens);
 		free(shell->line);
 		exit(shell->status);
 	}
 	if (_isnumber(shell->tokens[1]))
 	{
 		shell->status = _atoi(shell->tokens[1]);
-		free(shell->tokens);
+		free_tokens(shell->tokens);
 		free(shell->line);
 		exit(shell->status);
 	}
